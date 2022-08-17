@@ -32,10 +32,14 @@ That's it for the setup. The new site will be running at `https://*ORG_NAME*.git
 
 Publish comes with a command line setup tool and you can install it using Homebrew by running `$ brew install publish`. *Note: the homebrew support is not officially maintained.*
 
-For us to be able to setup our website using publish, we need to empty the directory for our website before being able to run `$ publish new` to create all the files we need. I simply moved the index.html to the desktop, ran `$ publish new`, and copied it back for clarity. This way it's easier to follow all the smaller steps using the [git branch](https://github.com/Iikeli/Iikeli.github.io/tree/publish-tutorial).
+For us to be able to setup our website using publish, we need to empty the directory for our website before being able to run `$ publish new` to create all the files we need. I simply moved the index.html to the desktop, ran `$ publish new`, and copied it back and deleted it in another commit. This way it's easier to follow all the smaller steps using the [git branch](https://github.com/Iikeli/Iikeli.github.io/tree/publish-tutorial).
 
 ### Development
 
 Developing a Publish website is fairly simple if you are familiar with Swift Packages and have Publish installed locally (like you do if you have followed this tutorial).
 
 Running the site on your local machine is as easy as using the command line and running `$ publish run`. This will build the site and create a locally running server at `http://localhost:8000`. Navigate there to see the locally running template site.
+
+## Deploying the site
+
+If you were to push this to your git repo now, it will not run. That is because your output files (being your actual HTML files) are located in the `Output` folder while GitHub looks for the `index.html` file in the root of the project. This will give you lovely `404 File not found` error for your site. The interesting thing is that from the settings for your repo, under `Settings -> Code and automation -> Pages` there is an option for setting the branch to be build and a folder to build, but it will only give you two options: `/(root)` and `/docs`.
