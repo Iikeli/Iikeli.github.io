@@ -3,20 +3,20 @@
 import PackageDescription
 
 let package = Package(
-    name: "IikeliGithubIo",
+    name: "iiroalhonen.com",
     platforms: [.macOS(.v12)],
     products: [
         .executable(
-            name: "IikeliGithubIo",
-            targets: ["IikeliGithubIo"]
+            name: "iiroalhonen.com",
+            targets: ["iiroalhonen.com"]
         )
     ],
     dependencies: [
-        .package(name: "Publish", url: "https://github.com/johnsundell/publish.git", from: "0.8.0")
+        .package(name: "Publish", url: "https://github.com/johnsundell/publish.git", from: "0.9.0")
     ],
     targets: [
         .executableTarget(
-            name: "IikeliGithubIo",
+            name: "iiroalhonen.com",
             dependencies: ["Publish"]
         )
     ]
