@@ -1,0 +1,20 @@
+# Create a website with Publish and GitHub Pages
+
+In this tutorial I will show you how to create a website using Publish and GitHub Pages. I'm focusing on the "organization" style page,
+
+## GitHub Pages
+
+[GitHub Pages](https://pages.github.com) is a service that GitHub provides for publishing a website for you, a company, or a project. For free you get one site per GitHub account and organization,
+and unlimited project sites. It's a perfect way to host basic websites as a developer and it's why I'm moving my websites from Webflow to GitHub Pages to save on costs.
+
+### Setting up your GitHub Pages website
+
+The setup for GitHub Pages is really simple: just follow the step-by-step instructions on [the front page](https://pages.github.com).
+
+1. Create a repository with the name `*ORG_NAME*.github.io`. Note that the *ORG_NAME* needs to match the username/organization name exactly, otherwise it won't work.
+2. Clone the repository created `$ git clone https://github.com/*ORG_NAME*/*ORG_NAME*.github.io`
+3. Navigate to the folder `$ cd *ORG_NAME*.github.io`
+4. Create an `index.html` file with `$ echo "Hello World" > index.html`
+5. Push the new file to the git repo `$ git add .` -> `$ git commit -m "Initial commit"` -> `git push`
+
+That's it for the setup. The new site will be running at `https://*ORG_NAME*.github.io` when the automatically provided GitHub action finishes running.
