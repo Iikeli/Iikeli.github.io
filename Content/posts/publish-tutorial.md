@@ -1,5 +1,5 @@
 ---
-date: 2022-08-17 12:50
+date: 2022-08-17 16:30
 description: Create and publish your personal website using GitHup Pages, Publish and Swift.
 tags: website, article, tutorial
 ---
@@ -39,6 +39,8 @@ For us to be able to setup our website using publish, we need to empty the direc
 Developing a Publish website is fairly simple if you are familiar with Swift Packages and have Publish installed locally (like you do if you have followed this tutorial).
 
 Running the site on your local machine is as easy as using the command line and running `$ publish run`. This will build the site and create a locally running server at `http://localhost:8000`. Navigate there to see the locally running template site.
+
+**More information coming here**
 
 ## Deploying the site
 
@@ -82,11 +84,15 @@ jobs:
         run: publish generate
 
       - name: Push Output folder to a git subtree for automatic deployment
-	    run: git subtree push --prefix Output origin production
+	    run: git push origin `git subtree split --prefix Output main`:production --force
 ```
 
 Save the workflow and give it a descriptive name, like `deploy.yml`. Now it will run on all pushes to main.
 
-The neat part about this workflow is that we are using `git subtree` command to push the Output folder to essentially its own branch that we can deploy using the automated system. Go back to `Settings -> Code and automation -> Pages` and under `Build and deployment` select `Deploy from a branch` for the `Source`. For the branch you need to select `production` which doesn't exist yet. You can either let merge the changes to you `main` branch or run the `git subtree push --prefix Output origin production` command manually. After that the branch is created and you can set it as the build branch.
+The neat part about this workflow is that we are using `git subtree` command to push the Output folder to essentially its own branch that we can deploy using the automated system. Go back to `Settings -> Code and automation -> Pages` and under `Build and deployment` select `Deploy from a branch` for the `Source`. For the branch you need to select `production` which doesn't exist yet. You can either let merge the changes to you `main` branch or run `git subtree push --prefix Output origin production` command manually. After that the branch is created and you can set it as the build branch.
 
-The one part that is not ideal about this workflow is using `Homebrew` to install `Publish` for it's build tooling, you could avoid this by running the `publish generate` command on your machine to limit the amount of work for the GitHub Actions machines, but including it does enforce that the code you are committing is the code being hosted.
+There are two parts that are not ideal about this workflow that you should be aware of:
+1. Using `Homebrew` to install `Publish` for it's build tooling, you could avoid this by running the `publish generate` command on your machine to limit the amount of work for the GitHub Actions machines, but including it does enforce that the code you are committing is the code being hosted.
+2. Using force push to ignore conflict that might rise when pushing the `Output` folder to the `production` branch.
+
+That's it. Now you have a website that is build with `Publish` running on `GitHub Pages`.
