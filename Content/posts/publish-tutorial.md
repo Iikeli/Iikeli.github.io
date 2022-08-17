@@ -43,3 +43,17 @@ Running the site on your local machine is as easy as using the command line and 
 ## Deploying the site
 
 If you were to push this to your git repo now, it will not run. That is because your output files (being your actual HTML files) are located in the `Output` folder while GitHub looks for the `index.html` file in the root of the project. This will give you lovely `404 File not found` error for your site. The interesting thing is that from the settings for your repo, under `Settings -> Code and automation -> Pages` there is an option for setting the branch to be build and a folder to build, but it will only give you two options: `/(root)` and `/docs`.
+
+This is obviously a problem, but it is easily solvable by writing a custom GitHub action, which you can download from [GitHub Marketplace](https://github.com/marketplace) ***Add correct URL when package is pubished.*** or implement it manually by following this section.
+
+### Custom GitHub Action for deployment
+
+To use a custom GitHub Action for development go to `Settings -> Code and automation -> Pages` and under `Build and deployment` select `GitHub Actions` for the `Source`.
+
+![Enable custom GitHub Actions](/custom-github-actions-setup.png)
+
+Then we customize the template to look like this (the documentation on what everything does is in the GitHub action file):
+
+```yaml
+
+```
