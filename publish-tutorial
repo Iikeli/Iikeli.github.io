@@ -1,6 +1,6 @@
 # Create a website with Publish and GitHub Pages
 
-In this tutorial I will show you how to create a website using Publish and GitHub Pages. I'm focusing on the "organization" style page,
+In this tutorial I will show you how to create a website using Publish and GitHub Pages. I'm focusing on the "organization" style page, since I am creating my own personal website. If you want to follow along in code, I am using a git branch for this that you can find [here](https://github.com/Iikeli/Iikeli.github.io/tree/publish-tutorial).
 
 ## GitHub Pages
 
@@ -18,3 +18,13 @@ The setup for GitHub Pages is really simple: just follow the step-by-step instru
 5. Push the new file to the git repo `$ git add .` -> `$ git commit -m "Initial commit"` -> `git push`
 
 That's it for the setup. The new site will be running at `https://*ORG_NAME*.github.io` when the automatically provided GitHub action finishes running.
+
+## Publish
+
+[Publish](https://github.com/JohnSundell/Publish) is a static site generator build for Swift developers by John Sundell. It enables websites to be build using Swift, supports themes, plugins, etc. The Publish framework is used to create John Sundells site [swiftbysundell](https://www.swiftbysundell.com).
+
+### Setup
+
+Publish comes with a command line setup tool and you can install it using Homebrew by running `$ brew install publish`.
+
+For us to be able to setup our website using publish, we need to empty the directory for our website before being able to run `$ publish new` to create all the files we need. I simply moved the index.html to the desktop, ran `$ publish new`, and copied it back for clarity.
