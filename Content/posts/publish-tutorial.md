@@ -32,10 +32,65 @@ That's it for the setup. The new site will be running at `https://*ORG_NAME*.git
 
 Publish comes with a command line setup tool and you can install it using Homebrew by running `$ brew install publish`. *Note: the homebrew support is not officially maintained.*
 
-For us to be able to setup our website using publish, we need to empty the directory for our website before being able to run `$ publish new` to create all the files we need. I simply moved the index.html to the desktop, ran `$ publish new`, and copied it back for clarity. This way it's easier to follow all the smaller steps using the [git branch](https://github.com/Iikeli/Iikeli.github.io/tree/publish-tutorial).
+For us to be able to setup our website using publish, we need to empty the directory for our website before being able to run `$ publish new` to create all the files we need. I simply moved the index.html to the desktop, ran `$ publish new`, and copied it back and deleted it in another commit. This way it's easier to follow all the smaller steps using the [git branch](https://github.com/Iikeli/Iikeli.github.io/tree/publish-tutorial).
 
 ### Development
 
 Developing a Publish website is fairly simple if you are familiar with Swift Packages and have Publish installed locally (like you do if you have followed this tutorial).
 
 Running the site on your local machine is as easy as using the command line and running `$ publish run`. This will build the site and create a locally running server at `http://localhost:8000`. Navigate there to see the locally running template site.
+
+## Deploying the site
+
+If you were to push this to your git repo now, it will not run. That is because your output files (being your actual HTML files) are located in the `Output` folder while GitHub looks for the `index.html` file in the root of the project. This will give you lovely `404 File not found` error for your site. The interesting thing is that from the settings for your repo, under `Settings -> Code and automation -> Pages` there is an option for setting the branch to be build and a folder to build, but it will only give you two options: `/(root)` and `/docs`.
+
+This is obviously a problem, but it is easily solvable by writing a custom GitHub action, which you can download from [GitHub Marketplace](https://github.com/marketplace) ***Add correct URL when package is pubished.*** or implement it manually by following this section.
+
+### Custom GitHub Action for deployment
+
+To use a custom GitHub Action for development go to `Settings -> Code and automation -> Pages` and under `Build and deployment` select `GitHub Actions` for the `Source`.
+
+![Enable custom GitHub Actions](/custom-github-actions-setup.png)
+
+Then we customize the template to look like this (the documentation on what everything does is in the GitHub action file):
+
+```yaml
+name: Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      # Copies and installs Publish by John Sundell
+      - name: Checkout Publish
+        run: brew install publish
+
+      - name: Build Publish site
+        run: publish generate
+
+      - name: Push Output folder to a git subtree for automatic deployment
+	    run: git subtree push --prefix Output origin production
+```
