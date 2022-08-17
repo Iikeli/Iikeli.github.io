@@ -3,12 +3,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "iiroalhonen.com",
+    name: "iiroalhonen",
     platforms: [.macOS(.v12)],
     products: [
         .executable(
-            name: "iiroalhonen.com",
-            targets: ["iiroalhonen.com"]
+            name: "iiroalhonen",
+            targets: ["iiroalhonen"]
         )
     ],
     dependencies: [
@@ -16,7 +16,7 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "iiroalhonen.com",
+            name: "iiroalhonen",
             dependencies: ["Publish"]
         )
     ]
