@@ -30,6 +30,12 @@ That's it for the setup. The new site will be running at `https://*ORG_NAME*.git
 
 ### Setup
 
-Publish comes with a command line setup tool and you can install it using Homebrew by running `$ brew install publish`.
+Publish comes with a command line setup tool and you can install it using Homebrew by running `$ brew install publish`. *Note: the homebrew support is not officially maintained.*
 
-For us to be able to setup our website using publish, we need to empty the directory for our website before being able to run `$ publish new` to create all the files we need. I simply moved the index.html to the desktop, ran `$ publish new`, and copied it back for clarity.
+For us to be able to setup our website using publish, we need to empty the directory for our website before being able to run `$ publish new` to create all the files we need. I simply moved the index.html to the desktop, ran `$ publish new`, and copied it back for clarity. This way it's easier to follow all the smaller steps using the [git branch](https://github.com/Iikeli/Iikeli.github.io/tree/publish-tutorial).
+
+### Development
+
+Developing a Publish website is fairly simple if you are familiar with Swift Packages and have Publish installed locally (like you do if you have followed this tutorial).
+
+Running the site on your local machine is as easy as using the command line and running `$ publish run`. This will build the site and create a locally running server at `http://localhost:8000`. Navigate there to see the locally running template site.

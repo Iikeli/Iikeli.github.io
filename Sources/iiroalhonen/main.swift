@@ -16,7 +16,7 @@ struct iiroalhonen: Website {
     // Update these properties to configure your website:
     var url = URL(string: "https://www.iiroalhonen.com")!
     var name = "iiroalhonen"
-    var description = "A description of iiroalhonen.com"
+    var description = "I am Iiro and this is my website where I share the articles I write. I work full time as an iOS Developer at Sanoma Media Finland and publish my own apps under the name Nifty Tree Studios."
     var language: Language { .english }
     var imagePath: Path? { nil }
 }
