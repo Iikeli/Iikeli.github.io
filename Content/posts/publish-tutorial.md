@@ -1,3 +1,8 @@
+---
+date: 2022-08-17 12:50
+description: Create and publish your personal website using GitHup Pages, Publish and Swift.
+tags: website, article, tutorial
+---
 # Create a website with Publish and GitHub Pages
 
 In this tutorial I will show you how to create a website using Publish and GitHub Pages. I'm focusing on the "organization" style page, since I am creating my own personal website. If you want to follow along in code, I am using a git branch for this that you can find [here](https://github.com/Iikeli/Iikeli.github.io/tree/publish-tutorial).
