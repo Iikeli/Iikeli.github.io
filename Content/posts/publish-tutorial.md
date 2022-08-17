@@ -60,8 +60,6 @@ name: Deploy
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -86,6 +84,8 @@ jobs:
       - name: Push Output folder to a git subtree for automatic deployment
 	    run: git subtree push --prefix Output origin production
 ```
+
+Save the workflow and give it a descriptive name, like `deploy.yml`. Now it will run on all pushes to main.
 
 The neat part about this workflow is that we are using `git subtree` command to push the Output folder to essentially its own branch that we can deploy using the automated system. Go back to `Settings -> Code and automation -> Pages` and under `Build and deployment` select `Deploy from a branch` for the `Source`. For the branch you need to select `production` which doesn't exist yet. You can either let merge the changes to you `main` branch or run the `git subtree push --prefix Output origin production` command manually. After that the branch is created and you can set it as the build branch.
 
