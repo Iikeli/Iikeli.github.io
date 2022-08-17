@@ -55,5 +55,42 @@ To use a custom GitHub Action for development go to `Settings -> Code and automa
 Then we customize the template to look like this (the documentation on what everything does is in the GitHub action file):
 
 ```yaml
+name: Deploy
 
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      # Copies and installs Publish by John Sundell
+      - name: Checkout Publish
+        run: brew install publish
+
+      - name: Build Publish site
+        run: publish generate
+
+      - name: Push Output folder to a git subtree for automatic deployment
+	    run: git subtree push --prefix Output origin production
 ```
