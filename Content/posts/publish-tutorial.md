@@ -16,7 +16,7 @@ and unlimited project sites. It's a perfect way to host basic websites as a deve
 
 The setup for GitHub Pages is really simple: just follow the step-by-step instructions on [the front page](https://pages.github.com).
 
-1. Create a repository with the name `*ORG_NAME*.github.io`. Note that the *ORG_NAME* needs to match the username/organization name exactly, otherwise it won't work.
+1. Create a repository with the name `*ORG_NAME*.github.io`. Note that the *ORG\_NAME* needs to match the username/organization name exactly, otherwise it won't work.
 2. Clone the repository created `$ git clone https://github.com/*ORG_NAME*/*ORG_NAME*.github.io`
 3. Navigate to the folder `$ cd *ORG_NAME*.github.io`
 4. Create an `index.html` file with `$ echo "Hello World" > index.html`
@@ -122,7 +122,7 @@ jobs:
         if: ${{ github.event.action == 'labeled' }}
         # https://docs.github.com/en/rest/reference/issues#remove-a-label-from-an-issue
         run: |
-          curl --silent --fail-with-body \
+          curl \
             -X DELETE \
             -H 'Accept: application/vnd.github.v3+json' \
             -H 'Authorization: token ${{ github.token }}' \
@@ -140,9 +140,11 @@ jobs:
 
       - name: Push changes to the Output folder
         run: |
+          git config --global user.name "Buildbot"
+          git config --global user.email "buildbot@users.noreply.github.com"
           git add Output/
           git commit -m "[BOT] build output for ${{ github.event.number }}"
-          git push
+          git push origin HEAD:${{ github.head_ref }}
 ```
 
 
