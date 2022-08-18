@@ -1,0 +1,43 @@
+name: Build Output
+
+on:
+  pull_request:
+    types: [labeled, ready_for_review]
+
+defaults:
+  run:
+    # GitHub's default is `bash --noprofile --norc -eo pipefail {0}`. Add the `-u` flag to fail on undefined variables.
+    # See: https://github.com/actions/runner/blob/main/docs/adrs/0277-run-action-shell-options.md
+    shell: bash --noprofile --norc -euo pipefail {0}
+
+jobs:
+  build-output:
+    name: Build output
+    runs-on: ubuntu-latest
+    if: ${{ github.event.action != 'labeled' || github.event.label.name == 'build output' }}
+    steps:
+      - name: Remove 'build output' label
+        if: ${{ github.event.action == 'labeled' }}
+        # https://docs.github.com/en/rest/reference/issues#remove-a-label-from-an-issue
+        run: |
+          curl --silent --fail-with-body \
+            -X DELETE \
+            -H 'Accept: application/vnd.github.v3+json' \
+            -H 'Authorization: token ${{ github.token }}' \
+            'https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.number }}/labels/build%20output'
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      # Copies and installs Publish by John Sundell
+      - name: Checkout Publish
+        run: brew install publish
+
+      - name: Build Publish site
+        run: publish generate
+
+      - name: Push changes to the Output folder
+        run: |
+          git add Output/
+          git commit -m "[BOT] build output for ${{ github.event.number }}"
+          git push
