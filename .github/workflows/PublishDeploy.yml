@@ -16,13 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
-      # Copies and installs Publish by John Sundell
-      - name: Checkout Publish
-        run: brew install publish
-
-      - name: Build Publish site
-        run: publish generate
 
       - name: Push Output folder to a git subtree for automatic deployment
-        run: git push origin `git subtree split --prefix Output main`:production --force
+        run: git subtree push --prefix Output origin production
