@@ -16,7 +16,7 @@ and unlimited project sites. It's a perfect way to host basic websites as a deve
 
 The setup for GitHub Pages is really simple: just follow the step-by-step instructions on [the front page](https://pages.github.com).
 
-1. Create a repository with the name `*ORG_NAME*.github.io`. Note that the *ORG_NAME* needs to match the username/organization name exactly, otherwise it won't work.
+1. Create a repository with the name `*ORG_NAME*.github.io`. Note that the *ORG\_NAME* needs to match the username/organization name exactly, otherwise it won't work.
 2. Clone the repository created `$ git clone https://github.com/*ORG_NAME*/*ORG_NAME*.github.io`
 3. Navigate to the folder `$ cd *ORG_NAME*.github.io`
 4. Create an `index.html` file with `$ echo "Hello World" > index.html`
@@ -84,15 +84,70 @@ jobs:
         run: publish generate
 
       - name: Push Output folder to a git subtree for automatic deployment
-	    run: git push origin `git subtree split --prefix Output main`:production --force
+	    run: git subtree push --prefix Output origin production
 ```
+
 
 Save the workflow and give it a descriptive name, like `deploy.yml`. Now it will run on all pushes to main.
 
 The neat part about this workflow is that we are using `git subtree` command to push the Output folder to essentially its own branch that we can deploy using the automated system. Go back to `Settings -> Code and automation -> Pages` and under `Build and deployment` select `Deploy from a branch` for the `Source`. For the branch you need to select `production` which doesn't exist yet. You can either let merge the changes to you `main` branch or run `git subtree push --prefix Output origin production` command manually. After that the branch is created and you can set it as the build branch.
 
-There are two parts that are not ideal about this workflow that you should be aware of:
-1. Using `Homebrew` to install `Publish` for it's build tooling, you could avoid this by running the `publish generate` command on your machine to limit the amount of work for the GitHub Actions machines, but including it does enforce that the code you are committing is the code being hosted.
-2. Using force push to ignore conflict that might rise when pushing the `Output` folder to the `production` branch.
+The parts that is not ideal about this workflow:
+1. Using `Homebrew` to install `Publish` for it's build tooling. It takes a long time and doing it on every push to `main` is bit of an overkill. You could avoid this by running the `publish generate` command on your machine to limit the amount of work for the GitHub Actions machines, but that requires you to remember that every time, which is not ideal.
+
+But we can do better. We can create another GitHub action to build the Output folder on our PRs and push it to that branch before we merge it. This means that the workflow that runs on our main branch is not affected by the long `Homebrew` builds and we can quickly do hot fixes when needed.
+
+So let's delete those `Checkout Publish` and `Build Publish site` steps and add them to a separate workflow that will look like this:
+
+```yaml
+name: Build Output
+
+on:
+  pull_request:
+    types: [labeled, ready_for_review]
+
+defaults:
+  run:
+    # GitHub's default is `bash --noprofile --norc -eo pipefail {0}`. Add the `-u` flag to fail on undefined variables.
+    # See: https://github.com/actions/runner/blob/main/docs/adrs/0277-run-action-shell-options.md
+    shell: bash --noprofile --norc -euo pipefail {0}
+
+jobs:
+  build-output:
+    name: Build output
+    runs-on: ubuntu-latest
+    if: ${{ github.event.action != 'labeled' || github.event.label.name == 'build output' }}
+    steps:
+      - name: Remove 'build output' label
+        if: ${{ github.event.action == 'labeled' }}
+        # https://docs.github.com/en/rest/reference/issues#remove-a-label-from-an-issue
+        run: |
+          curl \
+            -X DELETE \
+            -H 'Accept: application/vnd.github.v3+json' \
+            -H 'Authorization: token ${{ github.token }}' \
+            'https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.number }}/labels/build%20output'
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      # Copies and installs Publish by John Sundell
+      - name: Checkout Publish
+        run: brew install publish
+
+      - name: Build Publish site
+        run: publish generate
+
+      - name: Push changes to the Output folder
+        run: |
+          git config --global user.name "Buildbot"
+          git config --global user.email "buildbot@users.noreply.github.com"
+          git add Output/
+          git commit -m "[BOT] build output for ${{ github.event.number }}"
+          git push origin HEAD:${{ github.head_ref }}
+```
+
+
+The triggering action is when you add a `build output` label on a PR, or when the PR is no longer a draft. It will generate the code for the `Output` folder and push it to the branch. Now you no longer have to manually remember to generate the files and we are not crowding our main branch workflow with long build steps.
 
 That's it. Now you have a website that is build with `Publish` running on `GitHub Pages`.
