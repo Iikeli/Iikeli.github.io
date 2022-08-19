@@ -48,4 +48,4 @@ jobs:
           git commit -m "[BOT] build output for ${{ github.event.number }}"
           git status
           echo "Push"
-          git push origin HEAD:${{ github.head_ref }}
+          git push origin HEAD:${{ github.head_ref }} --force
