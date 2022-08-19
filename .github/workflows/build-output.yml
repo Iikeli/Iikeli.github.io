@@ -43,7 +43,7 @@ jobs:
           echo "Config done"
           git status
           echo "Add files"
-          git add Output/
+          git add Output/*
           echo "Commit"
           git commit -m "[BOT] build output for ${{ github.event.number }}"
           git status
