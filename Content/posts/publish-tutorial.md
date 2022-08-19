@@ -88,7 +88,7 @@ jobs:
         run: publish generate
 
       - name: Push Output folder to a git subtree for automatic deployment
-	    run: git subtree push --prefix Output origin production
+	    run: git push origin `git subtree split --prefix Output main`:production --force
 ```
 
 
