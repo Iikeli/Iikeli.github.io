@@ -1,5 +1,5 @@
 ---
-date: 2022-08-17 16:30
+date: 2022-08-10 10:47
 description: Create and publish your personal website using GitHup Pages, Publish and Swift.
 tags: website, article, tutorial
 ---
@@ -142,9 +142,9 @@ jobs:
         run: |
           git config --global user.name "Buildbot"
           git config --global user.email "buildbot@users.noreply.github.com"
-          git add Output/
+          git add Output/*
           git commit -m "[BOT] build output for ${{ github.event.number }}"
-          git push origin HEAD:${{ github.head_ref }}
+          git push origin HEAD:${{ github.head_ref }} --force
 ```
 
 
