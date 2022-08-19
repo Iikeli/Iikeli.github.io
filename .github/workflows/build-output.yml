@@ -40,12 +40,6 @@ jobs:
         run: |
           git config --global user.name "Buildbot"
           git config --global user.email "buildbot@users.noreply.github.com"
-          echo "Config done"
-          git status
-          echo "Add files"
           git add Output/*
-          echo "Commit"
           git commit -m "[BOT] build output for ${{ github.event.number }}"
-          git status
-          echo "Push"
           git push origin HEAD:${{ github.head_ref }} --force
