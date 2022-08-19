@@ -3,7 +3,7 @@ date: 2022-08-10 10:47
 description: Create and publish your personal website using GitHup Pages, Publish and Swift.
 tags: website, article, tutorial
 ---
-# Create a website with Publish and GitHub Pages
+# Setup a website with Publish and GitHub Pages
 
 In this tutorial I will show you how to create a website using Publish and GitHub Pages. I'm focusing on the "organization" style page, since I am creating my own personal website. If you want to follow along in code, I am using a git branch for this that you can find [here](https://github.com/Iikeli/Iikeli.github.io/tree/publish-tutorial).
 
@@ -40,7 +40,11 @@ Developing a Publish website is fairly simple if you are familiar with Swift Pac
 
 Running the site on your local machine is as easy as using the command line and running `$ publish run`. This will build the site and create a locally running server at `http://localhost:8000`. Navigate there to see the locally running template site.
 
-**More information coming here**
+By default your site is using the `Foundation` theme and by replacing that you can customize how your site acts. In this tutorial we'll be focusing on the setup and publishing of the website in GitHub Pages, so won't go through how you can create your own theme. That's a subject of it's own tutorial.
+
+As I have done here, the basic `Foundation` theme and folder structure allows you to create new markdown files under `Content -> posts` and those will be automatically made in to their own pages. As with [Swift by Sundell](www.swiftbysundell.com), this is the basic workflow the framework was created for and it is the way I plan to use my site.
+
+In the next blog post I'll go more in depth on how you can add sections and create your own theme. So stay tuned for that!
 
 ## Deploying the site
 
