@@ -13,7 +13,6 @@ struct Builder: CommandPlugin {
             "generate"
         ]
         try process.run()
-        process.executableURL?.stopAccessingSecurityScopedResource()
         process.waitUntilExit()
 
         if process.terminationReason == .exit && process.terminationStatus == 0 {
